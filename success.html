@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order confirmed — SPTB.</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body data-page="success">
+<header class="site-header" id="site-header"></header>
+<main>
+  <section class="section">
+    <div class="wrap" style="max-width:640px;text-align:center">
+      <div style="font-size:56px;margin-bottom:18px">&#10003;</div>
+      <h1 class="form-title">Thank you.</h1>
+      <p class="form-sub" id="success-sub">Your order is confirmed.</p>
+      <div class="summary" style="text-align:left;position:static" id="success-box"></div>
+      <div class="cta-row" style="margin-top:32px">
+        <a class="btn" href="/shop">Continue shopping</a>
+        <a class="btn btn-ghost" href="/account">View orders</a>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="/app.js" defer></script>
+<script type="module" src="/firebase-init.js"></script>
+<script>
+(function(){
+  var order=null;
+  try{ order=JSON.parse(localStorage.getItem("sptb_last_order")||"null"); }catch(e){}
+  var box=document.getElementById("success-box"), sub=document.getElementById("success-sub");
+  if(order){
+    var q=new URLSearchParams(location.search).get("oid");
+    if(q && q!==order.orderId){ /* stale copy, still show it */ }
+    sub.textContent="Order "+order.orderId+" is confirmed. A receipt was sent to "+order.email+".";
+    var items=order.items.map(function(i){
+      return '<div class="sum-row"><span>'+window.SPTB.esc(i.name)+' \u00d7 '+i.qty+'</span><span>'+window.SPTB.money(i.price*i.qty)+'</span></div>';
+    }).join("");
+    box.innerHTML=items+
+      '<div class="sum-row" style="margin-top:12px"><span>Shipping</span><span>'+(order.shipping===0?"Free":window.SPTB.money(order.shipping))+'</span></div>'+
+      '<div class="sum-row total"><span>Total</span><span>'+window.SPTB.money(order.total)+'</span></div>'+
+      '<p class="sum-note">Shipping to '+window.SPTB.esc(order.name)+", "+window.SPTB.esc(order.city)+".</p>";
+  }else{
+    sub.textContent="Your order is confirmed.";
+    box.innerHTML='<p class="sum-note">You can review it anytime under Account.</p>';
+  }
+})();
+</script>
+</body>
+</html>
