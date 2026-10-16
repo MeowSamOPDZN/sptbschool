@@ -1,19 +1,58 @@
 rules_version = '2';
 
 // SPTB. store — Firestore security rules
-// Paste into Firebase console: Firestore Database -> Rules -> paste -> Publish
+// Firebase console -> Firestore Database -> Rules -> paste -> Publish
+//
+// Admin access: create a collection named `admins`, add a document whose
+// DOCUMENT ID is your Firebase Auth UID (find it in Authentication -> Users).
+// The document can be empty — its existence is the admin proof.
 
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Orders: signed-in users can create their own orders and read only their own.
-    // Queries must filter by uid (e.g. where("uid", "==", auth.uid)).
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Products: public read; only admins write (admin panel).
+    match /products/{id} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Coupons: public read (codes are meant to be shared); only admins write,
+    // except any signed-in user may bump usedCount by itself when redeeming.
+    match /coupons/{code} {
+      allow read: if true;
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin()
+        || (request.auth != null
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["usedCount"]));
+    }
+
+    // Store settings (shipping rates, announcement): public read, admin write.
+    match /settings/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Admin registry: existence = admin. Docs are created manually in console.
+    match /admins/{uid} {
+      allow get: if (request.auth != null && request.auth.uid == uid) || isAdmin();
+      allow list, create, update, delete: if false;
+    }
+
+    // Orders: signed-in users create their own and read only their own.
+    // Client queries must filter where("uid", "==", auth.uid).
     match /orders/{orderId} {
       allow create: if request.auth != null
                     && request.resource.data.uid == request.auth.uid;
-      allow read:   if request.auth != null
-                    && resource.data.uid == request.auth.uid;
-      allow update, delete: if false;
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid
+                  || isAdmin();
+      allow update: if isAdmin()
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["status"]);
+      allow delete: if false;
     }
 
     // User profiles: each user reads/writes only their own doc.
@@ -21,10 +60,11 @@ service cloud.firestore {
       allow read, write: if request.auth != null && request.auth.uid == uid;
     }
 
-    // Contact form messages: anyone can submit, nobody reads via client.
+    // Contact messages: anyone can submit; only admins read/delete.
     match /messages/{messageId} {
       allow create: if true;
-      allow read, update, delete: if false;
+      allow read, delete: if isAdmin();
+      allow update: if false;
     }
   }
 }
