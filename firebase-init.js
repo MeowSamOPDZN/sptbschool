@@ -6,8 +6,8 @@ import {
   sendPasswordResetEmail, signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
-  getFirestore, collection, addDoc, serverTimestamp,
-  query, where, orderBy, getDocs
+  getFirestore, collection, doc, getDoc, getDocs, addDoc, setDoc,
+  updateDoc, deleteDoc, query, where, orderBy, limit, serverTimestamp, increment
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // Firebase web config — public by design (identifiers, not secrets).
@@ -29,20 +29,25 @@ export {
   onAuthStateChanged, GoogleAuthProvider, signInWithPopup,
   signInWithEmailAndPassword, createUserWithEmailAndPassword,
   sendPasswordResetEmail, signOut,
-  collection, addDoc, serverTimestamp, query, where, orderBy, getDocs
+  collection, doc, getDoc, getDocs, addDoc, setDoc,
+  updateDoc, deleteDoc, query, where, orderBy, limit, serverTimestamp, increment
+};
+
+// Bridge for the classic (non-module) storefront script.
+window.SPTB_FB = {
+  auth, db,
+  onAuthStateChanged, GoogleAuthProvider, signInWithPopup,
+  signInWithEmailAndPassword, createUserWithEmailAndPassword,
+  sendPasswordResetEmail, signOut,
+  collection, doc, getDoc, getDocs, addDoc, setDoc,
+  updateDoc, deleteDoc, query, where, orderBy, limit, serverTimestamp, increment
 };
 
 function setNav(user) {
   var a = document.getElementById("nav-auth");
-  if (a) {
-    a.textContent = user ? "Account" : "Sign in";
-    a.href = user ? "/account" : "/signin";
-  }
+  if (a) a.href = user ? "/account" : "/signin";
   var d = document.getElementById("drawer-auth");
-  if (d) {
-    d.textContent = user ? "Account" : "Sign in";
-    d.href = user ? "/account" : "/signin";
-  }
+  if (d) { d.textContent = user ? "Account" : "Sign in"; d.href = user ? "/account" : "/signin"; }
 }
 
 onAuthStateChanged(auth, function (user) {
@@ -50,4 +55,3 @@ onAuthStateChanged(auth, function (user) {
   setNav(user);
   document.dispatchEvent(new CustomEvent("sptb-auth", { detail: user || null }));
 });
-setNav(auth.currentUser);
