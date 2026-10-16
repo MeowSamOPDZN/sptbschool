@@ -1,0 +1,30 @@
+rules_version = '2';
+
+// SPTB. store — Firestore security rules
+// Paste into Firebase console: Firestore Database -> Rules -> paste -> Publish
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Orders: signed-in users can create their own orders and read only their own.
+    // Queries must filter by uid (e.g. where("uid", "==", auth.uid)).
+    match /orders/{orderId} {
+      allow create: if request.auth != null
+                    && request.resource.data.uid == request.auth.uid;
+      allow read:   if request.auth != null
+                    && resource.data.uid == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // User profiles: each user reads/writes only their own doc.
+    match /users/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // Contact form messages: anyone can submit, nobody reads via client.
+    match /messages/{messageId} {
+      allow create: if true;
+      allow read, update, delete: if false;
+    }
+  }
+}
