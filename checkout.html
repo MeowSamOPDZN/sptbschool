@@ -8,44 +8,46 @@
 </head>
 <body data-page="checkout">
 <header class="site-header" id="site-header"></header>
-<main>
-  <section class="wrap" style="padding-top:64px">
-    <div class="page-head" style="padding:0 0 8px"><h1>Checkout</h1></div>
-  </section>
-  <section class="section" style="padding-top:28px">
-    <div class="wrap cart-layout">
+<main class="wrap">
+  <section class="page-head"><h1>Checkout</h1></section>
+  <section class="section" style="padding-top:20px">
+    <div class="cart-layout">
       <div id="co-form-wrap">
-        <div id="auth-wall" style="display:none">
-          <div class="demo-note" style="font-size:15px">Please <a href="/signin?next=/checkout" style="color:var(--blue);font-weight:600">sign in</a> to complete your order. Your orders are saved to your account.</div>
+        <div class="card">
+          <div id="auth-wall" style="display:none">
+            <div class="demo-note" style="font-size:15px;margin:0">Please <a href="/signin?next=/checkout" style="color:var(--blue);font-weight:700">sign in</a> to complete your order. Your orders are saved to your account.</div>
+          </div>
+          <form id="checkout-form" style="display:none" novalidate>
+            <div class="form-err" id="co-err"></div>
+            <h2 class="sec-title" style="font-size:19px;margin-bottom:16px">Contact</h2>
+            <div class="field"><label for="co-email">Email</label><input id="co-email" type="email" autocomplete="email"></div>
+            <h2 class="sec-title" style="font-size:19px;margin:26px 0 16px">Shipping address</h2>
+            <div class="field-row">
+              <div class="field"><label for="co-name">Full name</label><input id="co-name" type="text" autocomplete="name"></div>
+              <div class="field"><label for="co-country">Country</label><input id="co-country" type="text" autocomplete="country-name"></div>
+            </div>
+            <div class="field"><label for="co-address">Address</label><input id="co-address" type="text" autocomplete="street-address" placeholder="Street and number"></div>
+            <div class="field-row">
+              <div class="field"><label for="co-city">City</label><input id="co-city" type="text" autocomplete="address-level2"></div>
+              <div class="field"><label for="co-zip">ZIP / Postal code</label><input id="co-zip" type="text" autocomplete="postal-code"></div>
+            </div>
+            <h2 class="sec-title" style="font-size:19px;margin:26px 0 16px">Payment</h2>
+            <div class="demo-note">Demo checkout — no real payment is processed. Connect a payment provider to take live payments.</div>
+            <div class="field"><label for="co-card">Card number</label><input id="co-card" type="text" inputmode="numeric" placeholder="4242 4242 4242 4242"></div>
+            <div class="field-row">
+              <div class="field"><label for="co-exp">Expiry</label><input id="co-exp" type="text" placeholder="MM / YY"></div>
+              <div class="field"><label for="co-cvc">CVC</label><input id="co-cvc" type="text" inputmode="numeric" placeholder="123"></div>
+            </div>
+            <button class="btn btn-full" id="place-order" type="submit" style="margin-top:8px">Place order</button>
+          </form>
         </div>
-        <form id="checkout-form" style="display:none" novalidate>
-          <div class="form-err" id="co-err"></div>
-          <h2 class="sec-title" style="font-size:20px;margin-bottom:18px">Contact</h2>
-          <div class="field"><label for="co-email">Email</label><input id="co-email" type="email" autocomplete="email" required></div>
-          <h2 class="sec-title" style="font-size:20px;margin:28px 0 18px">Shipping address</h2>
-          <div class="field-row">
-            <div class="field"><label for="co-name">Full name</label><input id="co-name" type="text" autocomplete="name" required></div>
-            <div class="field"><label for="co-country">Country</label><input id="co-country" type="text" autocomplete="country-name" required></div>
-          </div>
-          <div class="field"><label for="co-address">Address</label><input id="co-address" type="text" autocomplete="street-address" placeholder="Street and number" required></div>
-          <div class="field-row">
-            <div class="field"><label for="co-city">City</label><input id="co-city" type="text" autocomplete="address-level2" required></div>
-            <div class="field"><label for="co-zip">ZIP / Postal code</label><input id="co-zip" type="text" autocomplete="postal-code" required></div>
-          </div>
-          <h2 class="sec-title" style="font-size:20px;margin:28px 0 18px">Payment</h2>
-          <div class="demo-note">Demo checkout — no real payment is processed. Connect a payment provider to take live payments.</div>
-          <div class="field"><label for="co-card">Card number</label><input id="co-card" type="text" inputmode="numeric" placeholder="4242 4242 4242 4242" required></div>
-          <div class="field-row">
-            <div class="field"><label for="co-exp">Expiry</label><input id="co-exp" type="text" placeholder="MM / YY" required></div>
-            <div class="field"><label for="co-cvc">CVC</label><input id="co-cvc" type="text" inputmode="numeric" placeholder="123" required></div>
-          </div>
-          <button class="btn btn-full" id="place-order" type="submit" style="margin-top:10px">Place order</button>
-        </form>
       </div>
       <div>
         <div class="summary">
           <div id="co-items"></div>
-          <div class="sum-row" style="margin-top:14px"><span>Subtotal</span><span id="co-sub">$0.00</span></div>
+          <div id="cp-zone-checkout" style="margin-top:6px"></div>
+          <div class="sum-row" style="margin-top:12px"><span>Subtotal</span><span id="co-sub">$0.00</span></div>
+          <div class="sum-row" id="co-disc-row" style="display:none"><span>Coupon</span><span class="disc" id="co-disc"></span></div>
           <div class="sum-row"><span>Shipping</span><span id="co-ship">$0.00</span></div>
           <div class="sum-row total"><span>Total</span><span id="co-total">$0.00</span></div>
         </div>
@@ -56,51 +58,5 @@
 <footer class="site-footer" id="site-footer"></footer>
 <script src="/app.js" defer></script>
 <script type="module" src="/firebase-init.js"></script>
-<script type="module">
-import { auth, db, onAuthStateChanged, collection, addDoc, serverTimestamp } from "/firebase-init.js";
-
-function showErr(m){ var e=document.getElementById("co-err"); e.textContent=m; e.classList.add("show"); }
-function need(id){ var el=document.getElementById(id); return el && el.value.trim() ? el.value.trim() : null; }
-
-function ready(user){
-  var wall=document.getElementById("auth-wall"), form=document.getElementById("checkout-form");
-  if(!user){ wall.style.display=""; form.style.display="none"; return; }
-  wall.style.display="none"; form.style.display="";
-  var em=document.getElementById("co-email");
-  if(user.email && !em.value) em.value=user.email;
-
-  form.addEventListener("submit", async function(ev){
-    ev.preventDefault();
-    var email=need("co-email"), name=need("co-name"), country=need("co-country"),
-        address=need("co-address"), city=need("co-city"), zip=need("co-zip"),
-        card=need("co-card"), exp=need("co-exp"), cvc=need("co-cvc");
-    if(!email||!name||!country||!address||!city||!zip||!card||!exp||!cvc){ showErr("Please fill in every field."); return; }
-    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ showErr("That email doesn't look right."); return; }
-    var btn=document.getElementById("place-order");
-    btn.disabled=true; btn.innerHTML='<span class="spin"></span>Placing order…';
-    try{
-      var lines=window.SPTB.cartLines();
-      var items=lines.map(function(l){ return {slug:l.p.slug,name:l.p.name,price:l.p.price,qty:l.qty}; });
-      var sub=window.SPTB.cartSubtotal(), ship=window.SPTB.shippingFor(sub);
-      var orderId="SPTB-"+Math.random().toString(36).slice(2,8).toUpperCase();
-      var order={ orderId:orderId, uid:user.uid, email:email, items:items,
-        subtotal:sub, shipping:ship, total:sub+ship,
-        name:name, address:address, city:city, zip:zip, country:country,
-        status:"placed", createdAt:new Date().toISOString() };
-      await addDoc(collection(db,"orders"), Object.assign({}, order, {createdAt:serverTimestamp()}));
-      try{ localStorage.setItem("sptb_last_order", JSON.stringify(order)); }catch(e){}
-      window.SPTB.setCart({});
-      location.href="/success?oid="+orderId;
-    }catch(err){
-      console.error(err);
-      showErr("Couldn't place your order. Check your connection and try again.");
-      btn.disabled=false; btn.textContent="Place order";
-    }
-  }, { once:true });
-}
-
-if(auth.currentUser!==undefined){ ready(auth.currentUser); onAuthStateChanged(auth, ready); }
-else { document.addEventListener("sptb-auth", function(e){ ready(e.detail); }); }
-</script>
 </body>
 </html>
