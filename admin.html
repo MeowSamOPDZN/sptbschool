@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — SPTB.</title>
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/admin.css">
+</head>
+<body data-page="admin">
+<header class="site-header" id="site-header"></header>
+<main class="wrap">
+  <div id="admin-wall" style="display:none">
+    <div class="section"><div class="empty"><div class="eimg">&#128274;</div><h2>Admins only</h2><p>Sign in to access the admin panel.</p><a class="btn" href="/signin?next=/admin">Sign in</a></div></div>
+  </div>
+  <div id="admin-denied" style="display:none">
+    <div class="section"><div class="empty"><div class="eimg">&#128683;</div><h2>Not authorized</h2><p style="max-width:460px;margin:0 auto 24px">Your account isn't an admin yet. In the Firebase console, create a collection called <b>admins</b> and add a document whose <b>document ID</b> is your user UID (<span id="deny-uid" style="font-family:monospace"></span>), then refresh.</p><a class="btn" href="/">Back to store</a></div></div>
+  </div>
+  <div id="admin-app" style="display:none">
+    <div class="admin-shell">
+      <aside class="aside">
+        <a class="logo" href="/">SPTB.</a>
+        <div class="asub">Admin panel</div>
+        <div class="atabs">
+          <button class="atab on" data-tab="overview">Overview</button>
+          <button class="atab" data-tab="products">Products</button>
+          <button class="atab" data-tab="coupons">Coupons</button>
+          <button class="atab" data-tab="orders">Orders<span class="bdg" id="bdg-orders" hidden></span></button>
+          <button class="atab" data-tab="messages">Messages<span class="bdg" id="bdg-msgs" hidden></span></button>
+          <button class="atab" data-tab="settings">Settings</button>
+        </div>
+        <div class="afoot">
+          <a class="alink" href="/" target="_blank">View store &nearr;</a>
+          <a class="alink" href="#" id="admin-signout">Sign out</a>
+        </div>
+      </aside>
+      <div>
+        <section class="apanel on" id="p-overview">
+          <div class="ahead"><div><h2>Overview</h2><p>How the store is doing.</p></div></div>
+          <div class="stat-grid">
+            <div class="stat"><div class="sl">Revenue</div><div class="sv" id="st-rev">$0</div></div>
+            <div class="stat"><div class="sl">Orders</div><div class="sv" id="st-ord">0</div></div>
+            <div class="stat"><div class="sl">Products</div><div class="sv" id="st-prod">0</div></div>
+            <div class="stat"><div class="sl">Messages</div><div class="sv" id="st-msg">0</div></div>
+          </div>
+          <div class="ahead"><div><h2 style="font-size:19px">Recent orders</h2></div></div>
+          <div class="tbl" id="recent-orders"><div class="trow"><span style="color:var(--muted)">Loading&hellip;</span></div></div>
+        </section>
+        <section class="apanel" id="p-products">
+          <div class="ahead"><div><h2>Products</h2><p>Everything in your catalog.</p></div>
+            <div><button class="btn btn-light btn-sm" id="seed-btn">Seed demo products</button> <button class="btn btn-sm" id="prod-add">+ Add product</button></div></div>
+          <div class="tbl" id="prod-tbl"><div class="trow"><span style="color:var(--muted)">Loading&hellip;</span></div></div>
+        </section>
+        <section class="apanel" id="p-coupons">
+          <div class="ahead"><div><h2>Coupons</h2><p>Discount codes for checkout.</p></div><button class="btn btn-sm" id="coupon-add">+ Add coupon</button></div>
+          <div class="tbl" id="coupon-tbl"><div class="trow"><span style="color:var(--muted)">Loading&hellip;</span></div></div>
+        </section>
+        <section class="apanel" id="p-orders">
+          <div class="ahead"><div><h2>Orders</h2><p>Tap an order to see details and update status.</p></div></div>
+          <div id="orders-list"><div class="tbl"><div class="trow"><span style="color:var(--muted)">Loading&hellip;</span></div></div></div>
+        </section>
+        <section class="apanel" id="p-messages">
+          <div class="ahead"><div><h2>Messages</h2><p>Contact form inbox.</p></div></div>
+          <div class="tbl" id="msg-tbl"><div class="trow"><span style="color:var(--muted)">Loading&hellip;</span></div></div>
+        </section>
+        <section class="apanel" id="p-settings">
+          <div class="ahead"><div><h2>Settings</h2><p>Store-wide configuration.</p></div></div>
+          <div class="card" style="max-width:560px">
+            <div class="form-err" id="set-err"></div><div class="form-ok" id="set-ok"></div>
+            <div class="field"><label>Free shipping threshold ($)</label><input id="set-freeship" type="number" min="0" step="1"></div>
+            <div class="field"><label>Flat shipping cost ($)</label><input id="set-shipcost" type="number" min="0" step="0.01"></div>
+            <div class="field"><label>Announcement bar text <span style="color:var(--muted);font-weight:500">(empty = hidden)</span></label><input id="set-announce" type="text" placeholder="Free shipping on orders over $50"></div>
+            <button class="btn" id="set-save">Save settings</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="modal-ov" id="modal-ov"><div class="modal" id="modal-box"></div></div>
+
+<footer class="site-footer" id="site-footer"></footer>
+<script src="/app.js" defer></script>
+<script type="module" src="/firebase-init.js"></script>
+<script type="module" src="/admin.js"></script>
+</body>
+</html>
