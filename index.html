@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPTB. — Essentials, designed quietly.</title>
+<meta name="description" content="SPTB. — minimalist essentials. Apparel and everyday objects, designed quietly.">
+<link rel="stylesheet" href="/styles.css">
+<style>
+.pill-row{display:flex;gap:10px;flex-wrap:wrap}
+.pill{border:1px solid var(--line);background:#fff;border-radius:980px;padding:9px 20px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}
+.pill.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.hero-tile{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:70px;text-align:left}
+.hero-card{border-radius:24px;padding:44px 36px;color:#fff;min-height:300px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.hero-card h3{font-size:30px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+.hero-card p{opacity:.82;font-size:16px;margin-bottom:20px;max-width:320px}
+.hero-card .btn{background:#fff;color:var(--ink);align-self:flex-start}
+.hero-card .btn:hover{background:#f0f0f0}
+@media(max-width:720px){.hero-tile{grid-template-columns:1fr}.hero-card{min-height:240px;padding:32px 26px}}
+</style>
+</head>
+<body data-page="home">
+<header class="site-header" id="site-header"></header>
+<main>
+  <section class="hero wrap">
+    <span class="kicker">New — Campus Backpack</span>
+    <h1>Essentials,<br>designed quietly.</h1>
+    <p class="sub">Fewer, better things. Apparel and everyday objects made to disappear into your day.</p>
+    <div class="cta-row">
+      <a class="btn" href="/shop">Shop all</a>
+      <a class="btn btn-ghost" href="/about">Our story</a>
+    </div>
+    <div class="hero-tile">
+      <div class="hero-card" style="background:linear-gradient(135deg,#1c1c21,#4a4a55)">
+        <h3>The Classic Hoodie</h3>
+        <p>Heavyweight fleece. Our most loved piece, back in stock.</p>
+        <a class="btn btn-sm" href="/product/classic-hoodie">Shop now</a>
+      </div>
+      <div class="hero-card" style="background:linear-gradient(135deg,#33424f,#7e96ab)">
+        <h3>Campus Backpack</h3>
+        <p>20L of considered carry. Padded sleeve for your 16&Prime; machine.</p>
+        <a class="btn btn-sm" href="/product/campus-backpack">Shop now</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="sec-title">Featured</h2>
+        <a class="link-more" href="/shop">View all &rarr;</a>
+      </div>
+      <div class="grid" id="featured-grid"></div>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="wrap">
+      <div class="sec-head"><h2 class="sec-title">Why SPTB.</h2></div>
+      <div class="band">
+        <div class="band-item"><h3>Considered materials</h3><p>Heavyweight cotton, full-grain details, and fabrics chosen to age well — not to impress once.</p></div>
+        <div class="band-item"><h3>Free shipping over $50</h3><p>Orders over $50 ship free, worldwide. Under that, one flat $4.95 rate. No surprises.</p></div>
+        <div class="band-item"><h3>30-day returns</h3><p>Changed your mind? Send it back within 30 days for a full refund. No questions, no forms.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="/app.js" defer></script>
+<script type="module" src="/firebase-init.js"></script>
+</body>
+</html>
