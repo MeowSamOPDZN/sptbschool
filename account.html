@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Account — SPTB.</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body data-page="account">
+<header class="site-header" id="site-header"></header>
+<main>
+  <section class="wrap" style="padding-top:64px">
+    <div class="page-head" style="padding:0 0 8px"><h1>Account</h1><p id="acct-sub">Your orders and details.</p></div>
+  </section>
+  <section class="section" style="padding-top:28px">
+    <div class="wrap" style="max-width:760px">
+      <div id="acct-wall" style="display:none">
+        <div class="demo-note" style="font-size:15px">You're signed out. <a href="/signin?next=/account" style="color:var(--blue);font-weight:600">Sign in</a> to see your orders.</div>
+      </div>
+      <div id="acct-body" style="display:none">
+        <div class="sum-row" style="margin-bottom:24px"><span id="acct-email" style="color:var(--ink);font-weight:600"></span><button id="signout" class="btn btn-ghost btn-sm" type="button">Sign out</button></div>
+        <h2 class="sec-title" style="font-size:20px;margin-bottom:18px">Orders</h2>
+        <div id="orders-list"><p style="color:var(--muted)">Loading…</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="/app.js" defer></script>
+<script type="module" src="/firebase-init.js"></script>
+<script type="module">
+import { auth, db, onAuthStateChanged, signOut, collection, query, where, orderBy, getDocs } from "/firebase-init.js";
+
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+function money(n){ return "$"+Number(n).toFixed(2); }
+
+async function loadOrders(user){
+  var box=document.getElementById("orders-list");
+  try{
+    var q=query(collection(db,"orders"), where("uid","==",user.uid), orderBy("createdAt","desc"));
+    var snap=await getDocs(q);
+    if(snap.empty){ box.innerHTML='<div class="empty" style="padding:40px 0"><h2 style="font-size:22px">No orders yet.</h2><p>Your orders will appear here.</p><a class="btn" href="/shop">Start shopping</a></div>'; return; }
+    var html="";
+    snap.forEach(function(d){
+      var o=d.data();
+      var items=(o.items||[]).map(function(i){ return esc(i.name)+" \u00d7 "+i.qty; }).join(", ");
+      var date=o.createdAt&&o.createdAt.toDate?o.createdAt.toDate().toLocaleDateString():"";
+      html+='<div class="order"><div class="order-top"><span class="order-id">'+esc(o.orderId||"")+'</span><span class="order-date">'+esc(date)+'</span></div>'+
+        '<span class="order-status">'+esc(o.status||"placed")+'</span>'+
+        '<div class="order-items">'+items+'</div>'+
+        '<div class="order-total">'+money(o.total||0)+'</div></div>';
+    });
+    box.innerHTML=html;
+  }catch(e){ console.error(e); box.innerHTML='<p style="color:var(--muted)">Could not load orders. Try again in a moment.</p>'; }
+}
+
+function ready(user){
+  var wall=document.getElementById("acct-wall"), body=document.getElementById("acct-body");
+  if(!user){ wall.style.display=""; body.style.display="none"; return; }
+  wall.style.display="none"; body.style.display="";
+  document.getElementById("acct-email").textContent=user.email||"";
+  loadOrders(user);
+}
+document.getElementById("signout").addEventListener("click",async function(){ await signOut(auth); location.href="/"; });
+if(auth.currentUser!==undefined){ ready(auth.currentUser); onAuthStateChanged(auth,ready); }
+else{ document.addEventListener("sptb-auth",function(e){ ready(e.detail); }); }
+</script>
+</body>
+</html>
