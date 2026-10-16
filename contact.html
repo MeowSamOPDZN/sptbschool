@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact — SPTB.</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body data-page="contact">
+<header class="site-header" id="site-header"></header>
+<main>
+  <section class="wrap page-head"><h1>Contact</h1><p>Questions about an order or a product? Send a message — we reply within a day.</p></section>
+  <section class="section" style="padding-top:24px"><div class="wrap">
+    <div class="form-card">
+      <div class="form-err" id="c-err"></div>
+      <div class="form-ok" id="c-ok"></div>
+      <form id="contact-form" novalidate>
+        <div class="field-row">
+          <div class="field"><label for="c-name">Name</label><input id="c-name" type="text" autocomplete="name" required></div>
+          <div class="field"><label for="c-email">Email</label><input id="c-email" type="email" autocomplete="email" required></div>
+        </div>
+        <div class="field"><label for="c-msg">Message</label><textarea id="c-msg" required></textarea></div>
+        <button class="btn btn-full" id="c-send" type="submit">Send message</button>
+      </form>
+    </div>
+  </div></section>
+</main>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="/app.js" defer></script>
+<script type="module" src="/firebase-init.js"></script>
+<script type="module">
+import { db, collection, addDoc, serverTimestamp } from "/firebase-init.js";
+document.getElementById("contact-form").addEventListener("submit", async function(ev){
+  ev.preventDefault();
+  var name=document.getElementById("c-name").value.trim(),
+      email=document.getElementById("c-email").value.trim(),
+      msg=document.getElementById("c-msg").value.trim();
+  var err=document.getElementById("c-err"), ok=document.getElementById("c-ok");
+  err.classList.remove("show"); ok.classList.remove("show");
+  if(!name||!email||!msg){ err.textContent="Please fill in every field."; err.classList.add("show"); return; }
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ err.textContent="That email doesn't look right."; err.classList.add("show"); return; }
+  var btn=document.getElementById("c-send");
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span>Sending…';
+  try{
+    await addDoc(collection(db,"messages"),{name:name,email:email,message:msg,createdAt:serverTimestamp()});
+    ok.textContent="Message sent. We'll get back to you within a day."; ok.classList.add("show");
+    document.getElementById("contact-form").reset();
+  }catch(e){ err.textContent="Couldn't send. Check your connection and try again."; err.classList.add("show"); }
+  btn.disabled=false; btn.textContent="Send message";
+});
+</script>
+</body>
+</html>
