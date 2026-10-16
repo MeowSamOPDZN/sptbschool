@@ -3,60 +3,129 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SPTB. — Essentials, designed quietly.</title>
-<meta name="description" content="SPTB. — minimalist essentials. Apparel and everyday objects, designed quietly.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>SPTB. — Essentials, designed quietly</title>
+<meta name="description" content="SPTB. Minimal essentials and apparel. Designed quietly.">
 <link rel="stylesheet" href="/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23111417'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='monospace'>S.</text></svg>">
 </head>
 <body data-page="home">
-<header class="site-header" id="site-header"></header>
-<main class="wrap">
+<div class="frame">
+<div class="site-header" id="site-header"></div>
+
+<main>
+  <!-- HERO -->
   <section class="hero">
-    <div>
-      <span class="kicker">New season · 2026</span>
-      <h1>Essentials,<br>designed quietly.</h1>
-      <p class="sub">Fewer, better things. Apparel and everyday objects made to disappear into your day.</p>
-      <div class="cta-row">
-        <a class="btn" href="/shop">Shop the collection</a>
-        <a class="btn btn-light" href="/about">Our story</a>
+    <p class="hero-eyebrow">NEW SEASON — FW26</p>
+    <h1>Essentials for<br>every season<span class="dot">.</span></h1>
+    <div class="hero-ctas">
+      <a class="btn-dark" href="/shop">SHOP NOW</a>
+      <a class="btn-light" href="/shop">EXPLORE ALL</a>
+    </div>
+    <div class="hero-media">
+      <img src="/img/hero.jpg" alt="SPTB. seasonal campaign">
+      <div class="hero-chip bl">
+        <div class="avatars"><span>AO</span><span>DP</span><span>LK</span></div>
+        <p>Worn daily by 12,000+ minimalists. Heavyweight fabrics, quiet design, nothing loud.</p>
+      </div>
+      <div class="hero-chip br">
+        <span class="play">▶</span>
+        <p><b style="color:#121518">The FW26 film</b><br>60 seconds, no talking.</p>
       </div>
     </div>
-    <div class="hero-card" id="hero-card"></div>
   </section>
 
-  <section class="section">
-    <div class="pill-row" style="margin-bottom:28px">
-      <a class="pill" href="/shop">All</a>
-      <a class="pill" href="/shop?cat=apparel">Apparel</a>
-      <a class="pill" href="/shop?cat=essentials">Essentials</a>
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="mtrack">
+      <span class="fill">SPTB.</span><span>Essentials</span><span class="fill">FW26</span><span>Designed quietly</span>
+      <span class="fill">SPTB.</span><span>Essentials</span><span class="fill">FW26</span><span>Designed quietly</span>
     </div>
-    <div class="sec-head">
-      <h2 class="sec-title">Featured</h2>
-      <a class="link-more" href="/shop">View all &rarr;</a>
+  </div>
+
+  <!-- LOOKBOOK -->
+  <section>
+    <div class="vsec">
+      <div>
+        <p class="vsec-kick">LOOKBOOK — FW26</p>
+        <h2 class="vsec-title">Worn<br>quietly<span class="dot">.</span></h2>
+      </div>
+      <p class="vsec-sub">Three fits, zero noise. Shot on film, styled for every day.</p>
     </div>
-    <div class="grid" id="featured-grid">
+    <div class="look-grid">
+      <figure class="look">
+        <img src="/img/look1.jpg" alt="Dark hoodie look" loading="lazy">
+        <p class="cap">After hours, uniform on.</p>
+        <figcaption>01 — NIGHT SHIFT</figcaption>
+      </figure>
+      <figure class="look">
+        <img src="/img/look2.jpg" alt="Sling bag detail" loading="lazy">
+        <p class="cap">Carry light, move fast.</p>
+        <figcaption>02 — EVERYDAY CARRY</figcaption>
+      </figure>
+      <figure class="look">
+        <img src="/img/fit.jpg" alt="Full sweatsuit fit" loading="lazy">
+        <p class="cap">One sweatsuit, all weekend.</p>
+        <figcaption>03 — OFF DUTY</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- DUO COLLECTIONS -->
+  <section>
+    <div class="vsec">
+      <div>
+        <p class="vsec-kick">OUR TOP PICKS</p>
+        <h2 class="vsec-title">Top essentials<br>for peak days<span class="dot">.</span></h2>
+      </div>
+      <p class="vsec-sub">The two icons of the season — built heavy, priced fair.</p>
+    </div>
+    <div class="duo-grid">
+      <a class="duo-card" href="/product/classic-hoodie">
+        <img src="/img/hoodie.jpg" alt="Classic Hoodie" loading="lazy">
+        <span class="duo-tag">BESTSELLER</span>
+        <div class="duo-txt"><small>480 GSM brushed fleece</small>Heavyweight<br>comfort</div>
+        <span class="duo-go">→</span>
+      </a>
+      <a class="duo-card" href="/product/campus-backpack">
+        <img src="/img/backpack.jpg" alt="Campus Backpack" loading="lazy">
+        <span class="duo-tag">NEW</span>
+        <div class="duo-txt"><small>20L everyday carry</small>Carry<br>everything</div>
+        <span class="duo-go">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- PRODUCT GRID -->
+  <section>
+    <div class="vsec">
+      <div>
+        <p class="vsec-kick">THE CATALOG</p>
+        <h2 class="vsec-title">Fresh fits for<br>your next day<span class="dot">.</span></h2>
+      </div>
+      <a class="link-more" href="/shop">VIEW ALL</a>
+    </div>
+    <div class="vgrid" id="fit-grid">
       <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
     </div>
   </section>
 
-  <section id="deals-wrap">
-    <div class="deals">
-      <h2>Great Value Deals</h2>
-      <p>Find items on sale — up to 25% off. No codes, no games.</p>
-      <div class="grid" id="deals-grid"></div>
+  <!-- CTA -->
+  <section class="cta">
+    <div>
+      <h2>Level up your<br>daily uniform<span class="dot">.</span></h2>
+      <p>Eight essentials. No logos shouting, no seasonal gimmicks — just the good stuff, restocked.</p>
+      <a class="btn-light" href="/shop" style="display:inline-block">SHOP THE COLLECTION</a>
     </div>
+    <img src="/img/fit.jpg" alt="SPTB. full fit" loading="lazy">
   </section>
 
-  <section class="section">
-    <div class="sec-head"><h2 class="sec-title">Why SPTB.</h2></div>
-    <div class="band">
-      <div class="band-item"><div class="bic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div><h3>Considered materials</h3><p>Heavyweight cotton, full-grain details, fabrics chosen to age well — not to impress once.</p></div>
-      <div class="band-item"><div class="bic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></div><h3>Free shipping over $50</h3><p>One flat $4.95 under that, free above it. Worldwide, tracked, no surprises.</p></div>
-      <div class="band-item"><div class="bic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></div><h3>30-day returns</h3><p>Changed your mind? Send it back within 30 days for a full refund. No questions, no forms.</p></div>
-    </div>
-  </section>
+  <div style="height:44px"></div>
 </main>
-<footer class="site-footer" id="site-footer"></footer>
+
+<div class="site-footer" id="site-footer"></div>
+</div>
+<script src="/firebase-init.js" type="module"></script>
 <script src="/app.js" defer></script>
-<script type="module" src="/firebase-init.js"></script>
 </body>
 </html>
