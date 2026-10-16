@@ -3,10 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <title>Sign in — SPTB.</title>
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body data-page="signin">
+<div class="frame">
 <header class="site-header" id="site-header"></header>
 <main>
   <section class="section">
@@ -94,5 +96,6 @@ document.getElementById("forgot").addEventListener("click",async function(){
 });
 onAuthStateChanged(auth,function(u){ if(u) location.href=next; });
 </script>
+</div>
 </body>
 </html>
