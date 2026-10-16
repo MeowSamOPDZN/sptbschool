@@ -185,16 +185,18 @@
   }
   function cardHTML(p) {
     var wished = isWished(p.slug) ? " loved" : "";
-    var imgPart = p.img
-      ? '<span class="pimg"><img src="' + esc(p.img) + '" alt="' + esc(p.name) + '" loading="lazy">' + pricePill(p) + "</span>"
-      : '<span class="pimg tile" style="--g:' + esc(p.grad || "#999") + '"><span class="tletter">' + esc(p.letter || "?") + "</span>" + pricePill(p) + "</span>";
-    return '<div class="pcard">' +
-      '<a class="pimgwrap" href="/product/' + esc(p.slug) + '" style="display:block;position:relative">' + imgPart +
-      (p.tag ? '<span class="ptag">' + esc(p.tag) + "</span>" : "") +
-      '<button class="icon-act heart' + wished + '" data-wish="' + esc(p.slug) + '" aria-label="Save to wishlist">' + SVG.heart + "</button></a>" +
-      '<div class="pbody"><div><a class="pname" href="/product/' + esc(p.slug) + '">' + esc(p.name) + "</a>" +
-      '<div class="pmeta">' + stars(p.rating) + " " + p.rating.toFixed(1) + " (" + p.reviews + ")</div></div>" +
-      '<button class="bagbtn" data-add="' + esc(p.slug) + '" aria-label="Add to bag">' + SVG.bag + "</button></div></div>";
+    var mediaCls = "vcard-media" + (p.img ? "" : " tile");
+    var mediaStyle = p.img ? "" : ' style="--g:' + esc(p.grad || "#999") + '"';
+    var mediaInner = p.img
+      ? '<img src="' + esc(p.img) + '" alt="' + esc(p.name) + '" loading="lazy">'
+      : '<span class="tletter">' + esc(p.letter || "?") + "</span>";
+    var price = (p.compareAt && p.compareAt > p.price) ? "<s>" + money(p.compareAt) + "</s>" : "";
+    return '<article class="vcard">' +
+      '<a class="' + mediaCls + '" href="/product/' + esc(p.slug) + '"' + mediaStyle + ">" + mediaInner +
+      (p.tag ? '<span class="vtag">' + esc(p.tag) + "</span>" : "") +
+      '<button class="vheart' + wished + '" data-wish="' + esc(p.slug) + '" aria-label="Save to wishlist">' + SVG.heart + "</button></a>" +
+      '<a class="vpill" href="/product/' + esc(p.slug) + '"><span><b>' + esc(p.name) + "</b><i>" + price + money(p.price) + "</i></span>" +
+      '<em class="varrow">\u2192</em></a></article>';
   }
   function pricePill(p) {
     var s = '<span class="price-pill">';
@@ -207,26 +209,28 @@
     if (h) {
       h.innerHTML =
         '<div class="announce" id="announce" hidden></div>' +
-        '<div class="topbar-zone"><div class="topbar">' +
-        '<a class="logo" href="/">SPTB.</a>' +
-        '<label class="search-pill">' + SVG.search + '<input id="g-search" placeholder="Search products\u2026" autocomplete="off"></label>' +
-        '<nav class="topnav">' +
-        '<a href="/shop"' + (path.indexOf("/shop") === 0 || path.indexOf("/product") === 0 ? ' class="on"' : "") + '>Shop</a>' +
-        '<a href="/about"' + (path === "/about" ? ' class="on"' : "") + ">About</a>" +
-        '<a href="/faq"' + (path === "/faq" ? ' class="on"' : "") + ">FAQ</a>" +
-        '<a href="/contact"' + (path === "/contact" ? ' class="on"' : "") + ">Contact</a></nav>" +
-        '<div class="topicons">' +
-        '<button class="iconbtn" id="nav-search-btn" aria-label="Search">' + SVG.search + "</button>" +
-        '<a class="iconbtn" href="/wishlist" aria-label="Wishlist">' + SVG.heart + '<span class="cnt hide" id="wish-count">0</span></a>' +
-        '<a class="iconbtn" href="/cart" aria-label="Bag">' + SVG.bag + '<span class="cnt hide" id="bag-count">0</span></a>' +
-        '<a class="iconbtn" id="nav-auth" href="/signin" aria-label="Account">' + SVG.user + "</a>" +
-        '<button class="iconbtn" id="hamburger" aria-label="Menu">' + SVG.menu + "</button>" +
-        "</div></div>" +
-        '<div class="search-row" id="search-row"><input id="m-search" placeholder="Search products\u2026" autocomplete="off"></div></div>' +
+        '<nav class="vnav">' +
+        '<div class="vnav-left">' +
+        '<a class="nl" href="/shop"' + (path.indexOf("/shop") === 0 || path.indexOf("/product") === 0 ? ' on' : "") + '>SHOP</a>' +
+        '<a class="nl" href="/shop?cat=apparel">APPAREL</a>' +
+        '<a class="nl" href="/shop?cat=essentials">ESSENTIALS</a>' +
+        '<a class="nl" href="/about"' + (path === "/about" ? ' on' : "") + ">ABOUT</a></div>" +
+        '<a class="vlogo" href="/">SPTB.</a>' +
+        '<div class="vnav-right">' +
+        '<a class="nl" href="/faq"' + (path === "/faq" ? ' on' : "") + ">FAQ</a>" +
+        '<a class="nl" href="/contact"' + (path === "/contact" ? ' on' : "") + ">CONTACT</a>" +
+        '<button class="vicon" id="nav-search-btn" aria-label="Search">' + SVG.search + "</button>" +
+        '<a class="signin-pill" id="nav-auth" href="/signin">SIGN IN / UP</a>' +
+        '<a class="vicon" href="/wishlist" aria-label="Wishlist">' + SVG.heart + '<span class="cnt hide" id="wish-count">0</span></a>' +
+        '<a class="vicon" href="/cart" aria-label="Bag">' + SVG.bag + '<span class="cnt hide" id="bag-count">0</span></a>' +
+        '<button class="vburger" id="hamburger" aria-label="Menu">' + SVG.menu + "</button>" +
+        "</div></nav>" +
+        '<div class="search-row" id="search-row"><input id="m-search" placeholder="Search products\u2026" autocomplete="off"></div>' +
         '<div class="overlay" id="overlay"></div>' +
         '<aside class="drawer" id="drawer" aria-label="Menu">' +
         '<button class="drawer-close" id="drawer-close" aria-label="Close">&times;</button>' +
-        '<a class="d-link" href="/shop">Shop</a><a class="d-link" href="/wishlist">Wishlist</a>' +
+        '<a class="d-link" href="/shop">Shop</a><a class="d-link" href="/shop?cat=apparel">Apparel</a>' +
+        '<a class="d-link" href="/shop?cat=essentials">Essentials</a><a class="d-link" href="/wishlist">Wishlist</a>' +
         '<a class="d-link" href="/about">About</a><a class="d-link" href="/faq">FAQ</a>' +
         '<a class="d-link" href="/contact">Contact</a><a class="d-link" href="/account" id="drawer-auth">Account</a>' +
         '<div class="d-foot">Made by MeowSamOP DZN</div></aside>';
@@ -242,7 +246,6 @@
         if (sr.classList.contains("open")) document.getElementById("m-search").focus();
       });
       function goSearch(v) { v = v.trim(); if (v) location.href = "/shop?q=" + encodeURIComponent(v); }
-      document.getElementById("g-search").addEventListener("keydown", function (e) { if (e.key === "Enter") goSearch(e.target.value); });
       document.getElementById("m-search").addEventListener("keydown", function (e) { if (e.key === "Enter") goSearch(e.target.value); });
       document.body.addEventListener("click", function (e) {
         var w = e.target.closest("[data-wish]");
@@ -258,12 +261,13 @@
     var f = document.getElementById("site-footer");
     if (f) {
       f.innerHTML =
-        '<div class="foot"><div class="f-grid">' +
-        '<div><a class="logo" href="/">SPTB.</a><p class="f-tag">Essentials, designed quietly.</p></div>' +
-        '<div class="f-col"><h4>Shop</h4><a href="/shop">All products</a><a href="/shop?cat=apparel">Apparel</a><a href="/shop?cat=essentials">Essentials</a><a href="/wishlist">Wishlist</a></div>' +
-        '<div class="f-col"><h4>Company</h4><a href="/about">About</a><a href="/contact">Contact</a><a href="/faq">FAQ</a><a href="/account">Account</a></div>' +
-        '<div class="f-col"><h4>Support</h4><a href="/shipping">Shipping</a><a href="/returns">Returns</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>' +
-        '</div><div class="f-bottom"><span>\u00a9 2026 SPTB. All rights reserved.</span><span class="credit">Made by MeowSamOP DZN</span></div></div>';
+        '<div class="vfoot"><div class="vfoot-word">SPTB.</div>' +
+        '<div class="vfoot-grid">' +
+        '<div><h4>SHOP</h4><a href="/shop">All products</a><a href="/shop?cat=apparel">Apparel</a><a href="/shop?cat=essentials">Essentials</a><a href="/wishlist">Wishlist</a></div>' +
+        '<div><h4>COMPANY</h4><a href="/about">About</a><a href="/contact">Contact</a><a href="/faq">FAQ</a></div>' +
+        '<div><h4>SUPPORT</h4><a href="/shipping">Shipping</a><a href="/returns">Returns</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>' +
+        '<div><h4>ACCOUNT</h4><a href="/account">Account</a><a href="/cart">Bag</a><a href="/signin">Sign in</a></div>' +
+        '</div><div class="vfoot-bottom"><span>\u00a9 2026 SPTB. All rights reserved.</span><span class="credit">Made by MeowSamOP DZN</span></div></div>';
     }
     var tw = document.createElement("div");
     tw.id = "toast"; tw.className = "toast"; tw.setAttribute("role", "status");
@@ -282,25 +286,8 @@
   /* ---------- page: home ---------- */
   function renderHome() {
     catalog().then(function (list) {
-      var feat = document.getElementById("featured-grid");
-      if (feat) feat.innerHTML = list.slice(0, 4).map(cardHTML).join("");
-      var deals = document.getElementById("deals-grid");
-      var sale = list.filter(function (p) { return p.compareAt && p.compareAt > p.price; });
-      var dw = document.getElementById("deals-wrap");
-      if (deals) {
-        if (sale.length) deals.innerHTML = sale.slice(0, 4).map(cardHTML).join("");
-        else if (dw) dw.style.display = "none";
-      }
-      var hc = document.getElementById("hero-card");
-      if (hc) {
-        var p = list.filter(function (x) { return x.tag; })[0] || list[0];
-        hc.innerHTML =
-          '<a href="/product/' + esc(p.slug) + '"><div class="hc-img">' +
-          (p.img ? '<img src="' + esc(p.img) + '" alt="' + esc(p.name) + '">' : "") +
-          pricePill(p) + "</div></a>" +
-          '<div class="hc-row"><div><div class="hc-name">' + esc(p.name) + '</div><div class="hc-price">' + esc(p.tag || "Bestseller") + "</div></div>" +
-          '<button class="bagbtn" data-add="' + esc(p.slug) + '" aria-label="Add to bag">' + SVG.bag + "</button></div>";
-      }
+      var fg = document.getElementById("fit-grid");
+      if (fg) fg.innerHTML = list.slice(0, 8).map(cardHTML).join("");
     });
   }
 
