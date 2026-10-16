@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in — SPTB.</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body data-page="signin">
+<header class="site-header" id="site-header"></header>
+<main>
+  <section class="section">
+    <div class="wrap">
+      <div class="auth-card">
+        <h1 class="form-title" style="font-size:28px;text-align:center">Welcome</h1>
+        <p class="form-sub" style="text-align:center;margin-bottom:24px">Sign in to check out faster and track orders.</p>
+        <div class="tabs">
+          <button id="tab-in" class="active" type="button">Sign in</button>
+          <button id="tab-up" type="button">Create account</button>
+        </div>
+        <div class="form-err" id="auth-err"></div>
+        <div class="form-ok" id="auth-ok"></div>
+        <form id="auth-form" novalidate>
+          <div class="field"><label for="auth-email">Email</label><input id="auth-email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="auth-pass">Password</label><input id="auth-pass" type="password" autocomplete="current-password" minlength="6" required></div>
+          <button class="btn btn-full" id="auth-submit" type="submit">Sign in</button>
+        </form>
+        <div style="text-align:center;margin-top:14px"><button id="forgot" type="button" style="background:none;border:0;color:var(--blue);font-size:14px;cursor:pointer">Forgot password?</button></div>
+        <div class="divider">or</div>
+        <button class="btn btn-ghost btn-full" id="google-btn" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" style="margin-right:10px"><path fill="#4285F4" d="M23.5 12.3c0-.9-.1-1.5-.3-2.3H12v4.5h6.5c-.1 1.1-.8 2.7-2.4 3.8l-.1.1 3.5 2.7.2.1c2.2-2 3.8-5 3.8-8.9z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-2.9l-3.8-3c-1 .7-2.4 1.2-4.2 1.2-3.2 0-6-2.2-7-5.1l-.1.1-3.7 2.9v.1C3.3 21.3 7.3 24 12 24z"/><path fill="#FBBC05" d="M5 14.2c-.2-.7-.4-1.4-.4-2.2s.1-1.5.4-2.2l-.1-.1-3.6-2.8-.1.1C.4 8.5 0 10.2 0 12s.4 3.5 1.2 5l3.8-2.8z"/><path fill="#EA4335" d="M12 4.7c1.8 0 3 .8 3.7 1.4l3.3-3.2C17.9 1.1 15.2 0 12 0 7.3 0 3.3 2.7 1.2 6.9l3.8 3C6 7 8.8 4.7 12 4.7z"/></svg>
+          Continue with Google
+        </button>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="/app.js" defer></script>
+<script type="module" src="/firebase-init.js"></script>
+<script type="module">
+import { auth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup,
+         signInWithEmailAndPassword, createUserWithEmailAndPassword,
+         sendPasswordResetEmail } from "/firebase-init.js";
+
+var mode="in";
+var tabIn=document.getElementById("tab-in"), tabUp=document.getElementById("tab-up"),
+    submit=document.getElementById("auth-submit"), errBox=document.getElementById("auth-err"),
+    okBox=document.getElementById("auth-ok");
+var next=new URLSearchParams(location.search).get("next")||"/account";
+
+function showErr(m){ errBox.textContent=m; errBox.classList.add("show"); okBox.classList.remove("show"); }
+function showOk(m){ okBox.textContent=m; okBox.classList.add("show"); errBox.classList.remove("show"); }
+function friendly(e){
+  var c=(e&&e.code)||"";
+  if(c==="auth/invalid-credential"||c==="auth/wrong-password") return "Wrong email or password.";
+  if(c==="auth/user-not-found") return "No account with that email. Try creating one.";
+  if(c==="auth/email-already-in-use") return "That email already has an account. Sign in instead.";
+  if(c==="auth/weak-password") return "Password needs at least 6 characters.";
+  if(c==="auth/invalid-email") return "That email doesn't look right.";
+  if(c==="auth/popup-closed-by-user") return "Sign-in popup was closed.";
+  return "Something went wrong. Please try again.";
+}
+function setMode(m){
+  mode=m;
+  tabIn.classList.toggle("active",m==="in"); tabUp.classList.toggle("active",m==="up");
+  submit.textContent=m==="in"?"Sign in":"Create account";
+  document.getElementById("auth-pass").setAttribute("autocomplete",m==="in"?"current-password":"new-password");
+}
+tabIn.addEventListener("click",function(){setMode("in");});
+tabUp.addEventListener("click",function(){setMode("up");});
+
+document.getElementById("auth-form").addEventListener("submit",async function(ev){
+  ev.preventDefault();
+  var email=document.getElementById("auth-email").value.trim(),
+      pass=document.getElementById("auth-pass").value;
+  if(!email||!pass){ showErr("Enter your email and password."); return; }
+  submit.disabled=true; submit.innerHTML='<span class="spin"></span>Please wait…';
+  try{
+    if(mode==="in") await signInWithEmailAndPassword(auth,email,pass);
+    else await createUserWithEmailAndPassword(auth,email,pass);
+    location.href=next;
+  }catch(e){ showErr(friendly(e)); submit.disabled=false; submit.textContent=mode==="in"?"Sign in":"Create account"; }
+});
+document.getElementById("google-btn").addEventListener("click",async function(){
+  try{ await signInWithPopup(auth,new GoogleAuthProvider()); location.href=next; }
+  catch(e){ showErr(friendly(e)); }
+});
+document.getElementById("forgot").addEventListener("click",async function(){
+  var email=document.getElementById("auth-email").value.trim();
+  if(!email){ showErr("Enter your email first, then tap Forgot password."); return; }
+  try{ await sendPasswordResetEmail(auth,email); showOk("Reset link sent. Check your inbox."); }
+  catch(e){ showErr(friendly(e)); }
+});
+onAuthStateChanged(auth,function(u){ if(u) location.href=next; });
+</script>
+</body>
+</html>
