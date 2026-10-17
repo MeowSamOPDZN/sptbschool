@@ -169,15 +169,16 @@
   }
 
   /* ---------- theme (dark / light) ---------- */
+  var THEME_KEY = "sptb_theme_v4";
   function initTheme() {
-    var root = document.documentElement, t = "dark";
-    try { t = localStorage.getItem("sptb_theme") || "dark"; } catch (e) {}
-    root.dataset.theme = (t === "light") ? "light" : "dark";
+    var root = document.documentElement, t = "light";
+    try { t = localStorage.getItem(THEME_KEY) || "light"; } catch (e) {}
+    root.dataset.theme = (t === "dark") ? "dark" : "light";
     document.body.addEventListener("click", function (e) {
       if (!e.target.closest("#theme-toggle")) return;
       var next = root.dataset.theme === "light" ? "dark" : "light";
       root.dataset.theme = next;
-      try { localStorage.setItem("sptb_theme", next); } catch (e2) {}
+      try { localStorage.setItem(THEME_KEY, next); } catch (e2) {}
     });
   }
 
@@ -198,18 +199,22 @@
   }
   function cardHTML(p) {
     var wished = isWished(p.slug) ? " loved" : "";
-    var mediaCls = "vcard-media" + (p.img ? "" : " tile");
-    var mediaStyle = p.img ? "" : ' style="--g:' + esc(p.grad || "#999") + '"';
+    var mediaCls = "p-media" + (p.img ? "" : " tile");
+    var mediaStyle = p.img ? "" : ' style="--g:' + esc(p.grad || "#888") + '"';
     var mediaInner = p.img
       ? '<img src="' + esc(p.img) + '" alt="' + esc(p.name) + '" loading="lazy">'
       : '<span class="tletter">' + esc(p.letter || "?") + "</span>";
-    var price = (p.compareAt && p.compareAt > p.price) ? "<s>" + money(p.compareAt) + "</s>" : "";
-    return '<article class="vcard">' +
+    var price = (p.compareAt && p.compareAt > p.price)
+      ? "<s>" + money(p.compareAt) + '</s><span class="sale">' + money(p.price) + "</span>"
+      : money(p.price);
+    return '<article class="p-card">' +
       '<a class="' + mediaCls + '" href="/product/' + esc(p.slug) + '"' + mediaStyle + ">" + mediaInner +
-      (p.tag ? '<span class="vtag">' + esc(p.tag) + "</span>" : "") +
-      '<button class="vheart' + wished + '" data-wish="' + esc(p.slug) + '" aria-label="Save to wishlist">' + SVG.heart + "</button></a>" +
-      '<a class="vpill" href="/product/' + esc(p.slug) + '"><span><b>' + esc(p.name) + "</b><i>" + price + money(p.price) + "</i></span>" +
-      '<em class="varrow">\u2192</em></a></article>';
+      (p.tag ? '<span class="p-tag">' + esc(p.tag) + "</span>" : "") +
+      '<button class="p-wish' + wished + '" data-wish="' + esc(p.slug) + '" aria-label="Save to wishlist">' + SVG.heart + "</button>" +
+      '<button class="p-add" data-add="' + esc(p.slug) + '">Quick add</button></a>' +
+      '<div class="p-row"><div><a class="p-name" href="/product/' + esc(p.slug) + '">' + esc(p.name) + "</a>" +
+      '<div class="p-cat">' + esc((p.cat || "").toUpperCase()) + "</div></div>" +
+      '<div class="p-price">' + price + "</div></div></article>";
   }
   function pricePill(p) {
     var s = '<span class="price-pill">';
@@ -222,25 +227,22 @@
     if (h) {
       h.innerHTML =
         '<div class="announce" id="announce" hidden></div>' +
-        '<nav class="vnav">' +
-        '<div class="vnav-left">' +
-        '<a class="nl" href="/shop"' + (path.indexOf("/shop") === 0 || path.indexOf("/product") === 0 ? ' on' : "") + '>SHOP</a>' +
-        '<a class="nl" href="/shop?cat=apparel">APPAREL</a>' +
-        '<a class="nl" href="/shop?cat=essentials">ESSENTIALS</a>' +
-        '<a class="nl" href="/about"' + (path === "/about" ? ' on' : "") + ">ABOUT</a></div>" +
-        '<a class="vlogo" href="/">SPTB.</a>' +
-        '<div class="vnav-right">' +
-        '<a class="nl" href="/faq"' + (path === "/faq" ? ' on' : "") + ">FAQ</a>" +
-        '<a class="nl" href="/contact"' + (path === "/contact" ? ' on' : "") + ">CONTACT</a>" +
-        '<button class="vicon ttoggle" id="theme-toggle" aria-label="Toggle theme">' +
+        '<header class="nav"><div class="nav-in">' +
+        '<a class="wordmark" href="/">SPTB.</a>' +
+        '<nav class="nav-links">' +
+        '<a href="/shop"' + (path.indexOf("/shop") === 0 || path.indexOf("/product") === 0 ? ' class="on"' : "") + ">SHOP</a>" +
+        '<a href="/shop?cat=apparel">APPAREL</a>' +
+        '<a href="/shop?cat=essentials">ESSENTIALS</a>' +
+        '<a href="/about"' + (path === "/about" ? ' class="on"' : "") + ">ABOUT</a></nav>" +
+        '<div class="nav-icons">' +
+        '<button class="icobtn ttoggle" id="theme-toggle" aria-label="Toggle theme">' +
         '<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13.5A8 8 0 1 1 10.5 4 6.5 6.5 0 0 0 20 13.5z"/></svg>' +
         '<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5 5l1.8 1.8M17.2 17.2L19 19M19 5l-1.8 1.8M6.8 17.2L5 19"/></svg></button>' +
-        '<button class="vicon" id="nav-search-btn" aria-label="Search">' + SVG.search + "</button>" +
-        '<a class="signin-pill" id="nav-auth" href="/signin">SIGN IN / UP</a>' +
-        '<a class="vicon" href="/wishlist" aria-label="Wishlist">' + SVG.heart + '<span class="cnt hide" id="wish-count">0</span></a>' +
-        '<a class="vicon" href="/cart" aria-label="Bag">' + SVG.bag + '<span class="cnt hide" id="bag-count">0</span></a>' +
-        '<button class="vburger" id="hamburger" aria-label="Menu">' + SVG.menu + "</button>" +
-        "</div></nav>" +
+        '<button class="icobtn" id="nav-search-btn" aria-label="Search">' + SVG.search + "</button>" +
+        '<a class="icobtn" href="/wishlist" aria-label="Wishlist">' + SVG.heart + '<span class="cnt hide" id="wish-count">0</span></a>' +
+        '<a class="icobtn" href="/cart" aria-label="Bag">' + SVG.bag + '<span class="cnt hide" id="bag-count">0</span></a>' +
+        '<button class="icobtn burger" id="hamburger" aria-label="Menu">' + SVG.menu + "</button>" +
+        "</div></div></header>" +
         '<div class="search-row" id="search-row"><input id="m-search" placeholder="Search products\u2026" autocomplete="off"></div>' +
         '<div class="overlay" id="overlay"></div>' +
         '<aside class="drawer" id="drawer" aria-label="Menu">' +
@@ -277,13 +279,14 @@
     var f = document.getElementById("site-footer");
     if (f) {
       f.innerHTML =
-        '<div class="vfoot"><div class="vfoot-word">SPTB.</div>' +
-        '<div class="vfoot-grid">' +
+        '<div class="foot"><div class="foot-in">' +
+        '<div class="foot-word">SPTB.</div>' +
+        '<div class="foot-grid">' +
+        '<div><p class="micro" style="margin-bottom:14px">EST. 2026</p><p>Eight everyday essentials. Heavyweight materials, honest prices, nothing you don\'t need.</p></div>' +
         '<div><h4>SHOP</h4><a href="/shop">All products</a><a href="/shop?cat=apparel">Apparel</a><a href="/shop?cat=essentials">Essentials</a><a href="/wishlist">Wishlist</a></div>' +
-        '<div><h4>COMPANY</h4><a href="/about">About</a><a href="/contact">Contact</a><a href="/faq">FAQ</a></div>' +
+        '<div><h4>COMPANY</h4><a href="/about">About</a><a href="/contact">Contact</a><a href="/faq">FAQ</a><a href="/account">Account</a></div>' +
         '<div><h4>SUPPORT</h4><a href="/shipping">Shipping</a><a href="/returns">Returns</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>' +
-        '<div><h4>ACCOUNT</h4><a href="/account">Account</a><a href="/cart">Bag</a><a href="/signin">Sign in</a></div>' +
-        '</div><div class="vfoot-bottom"><span>\u00a9 2026 SPTB. All rights reserved.</span><span class="credit">Made by MeowSamOP DZN</span></div></div>';
+        '</div><div class="foot-bottom"><span>\u00a9 2026 SPTB. All rights reserved.</span><span class="credit">Made by MeowSamOP DZN</span></div></div></div>';
     }
     var tw = document.createElement("div");
     tw.id = "toast"; tw.className = "toast"; tw.setAttribute("role", "status");
@@ -360,8 +363,8 @@
           '<button class="z2" data-v="2"><img src="' + esc(p.img) + '" alt=""></button></div>'
         : '<div class="gmain tile" style="--g:' + esc(p.grad || "#999") + '"><span class="tletter">' + esc(p.letter || "?") + "</span>" + pricePill(p) + "</div>";
       var revs = SAMPLE_REVIEWS.map(function (r) {
-        return '<div class="rev"><div class="rhead"><div class="ravatar">' + esc(r.n[0]) + '</div><div><div class="rname">' + esc(r.n) + '</div><div class="rdate">' + esc(r.d) + '</div></div></div>' +
-          '<div>' + stars(5) + '</div><p>' + esc(r.t) + "</p></div>";
+        return '<div class="rev"><div><div class="stars">' + stars(5) + '</div><p>&ldquo;' + esc(r.t) + '&rdquo;</p></div>' +
+          "<cite>" + esc(r.n) + " — Verified buyer</cite></div>";
       }).join("");
       box.innerHTML =
         '<div class="pgrid"><div class="gallery">' + gal + "</div>" +
