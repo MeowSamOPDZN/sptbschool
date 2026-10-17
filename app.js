@@ -168,6 +168,19 @@
     if (w) { w.textContent = wn; w.classList.toggle("hide", wn === 0); }
   }
 
+  /* ---------- theme (dark / light) ---------- */
+  function initTheme() {
+    var root = document.documentElement, t = "dark";
+    try { t = localStorage.getItem("sptb_theme") || "dark"; } catch (e) {}
+    root.dataset.theme = (t === "light") ? "light" : "dark";
+    document.body.addEventListener("click", function (e) {
+      if (!e.target.closest("#theme-toggle")) return;
+      var next = root.dataset.theme === "light" ? "dark" : "light";
+      root.dataset.theme = next;
+      try { localStorage.setItem("sptb_theme", next); } catch (e2) {}
+    });
+  }
+
   /* ---------- layout ---------- */
   var SVG = {
     bag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h15l-1.2 12.2a1 1 0 0 1-1 .8H5.2a1 1 0 0 1-1-.8L3 8h3z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/></svg>',
@@ -219,6 +232,9 @@
         '<div class="vnav-right">' +
         '<a class="nl" href="/faq"' + (path === "/faq" ? ' on' : "") + ">FAQ</a>" +
         '<a class="nl" href="/contact"' + (path === "/contact" ? ' on' : "") + ">CONTACT</a>" +
+        '<button class="vicon ttoggle" id="theme-toggle" aria-label="Toggle theme">' +
+        '<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13.5A8 8 0 1 1 10.5 4 6.5 6.5 0 0 0 20 13.5z"/></svg>' +
+        '<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5 5l1.8 1.8M17.2 17.2L19 19M19 5l-1.8 1.8M6.8 17.2L5 19"/></svg></button>' +
         '<button class="vicon" id="nav-search-btn" aria-label="Search">' + SVG.search + "</button>" +
         '<a class="signin-pill" id="nav-auth" href="/signin">SIGN IN / UP</a>' +
         '<a class="vicon" href="/wishlist" aria-label="Wishlist">' + SVG.heart + '<span class="cnt hide" id="wish-count">0</span></a>' +
@@ -607,6 +623,7 @@
 
   /* ---------- boot ---------- */
   document.addEventListener("DOMContentLoaded", function () {
+    initTheme();
     mountLayout();
     var page = document.body.dataset.page;
     if (page === "home") renderHome();
