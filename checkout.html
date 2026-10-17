@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <title>Checkout — SPTB.</title>
-<script>try{document.documentElement.dataset.theme=localStorage.getItem('sptb_theme')||'dark'}catch(e){document.documentElement.dataset.theme='dark'}</script>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('sptb_theme_v4')||'light'}catch(e){document.documentElement.dataset.theme='light'}</script>
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body data-page="checkout">
@@ -18,13 +18,13 @@
       <div id="co-form-wrap">
         <div class="card">
           <div id="auth-wall" style="display:none">
-            <div class="demo-note" style="font-size:15px;margin:0">Please <a href="/signin?next=/checkout" style="color:var(--blue);font-weight:700">sign in</a> to complete your order. Your orders are saved to your account.</div>
+            <div class="demo-note" style="font-size:15px;margin:0">Please <a href="/signin?next=/checkout" style="color:var(--accent);font-weight:700">sign in</a> to complete your order. Your orders are saved to your account.</div>
           </div>
           <form id="checkout-form" style="display:none" novalidate>
             <div class="form-err" id="co-err"></div>
-            <h2 class="sec-title" style="font-size:19px;margin-bottom:16px">Contact</h2>
+            <h2 style="font-size:19px;margin-bottom:16px;font-weight:700;letter-spacing:-.02em">Contact</h2>
             <div class="field"><label for="co-email">Email</label><input id="co-email" type="email" autocomplete="email"></div>
-            <h2 class="sec-title" style="font-size:19px;margin:26px 0 16px">Shipping address</h2>
+            <h2 style="font-size:19px;margin:26px 0 16px;font-weight:700;letter-spacing:-.02em">Shipping address</h2>
             <div class="field-row">
               <div class="field"><label for="co-name">Full name</label><input id="co-name" type="text" autocomplete="name"></div>
               <div class="field"><label for="co-country">Country</label><input id="co-country" type="text" autocomplete="country-name"></div>
@@ -34,7 +34,7 @@
               <div class="field"><label for="co-city">City</label><input id="co-city" type="text" autocomplete="address-level2"></div>
               <div class="field"><label for="co-zip">ZIP / Postal code</label><input id="co-zip" type="text" autocomplete="postal-code"></div>
             </div>
-            <h2 class="sec-title" style="font-size:19px;margin:26px 0 16px">Payment</h2>
+            <h2 style="font-size:19px;margin:26px 0 16px;font-weight:700;letter-spacing:-.02em">Payment</h2>
             <div class="demo-note">Demo checkout — no real payment is processed. Connect a payment provider to take live payments.</div>
             <div class="field"><label for="co-card">Card number</label><input id="co-card" type="text" inputmode="numeric" placeholder="4242 4242 4242 4242"></div>
             <div class="field-row">
