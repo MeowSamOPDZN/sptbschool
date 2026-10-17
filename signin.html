@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <title>Sign in — SPTB.</title>
-<script>try{document.documentElement.dataset.theme=localStorage.getItem('sptb_theme')||'dark'}catch(e){document.documentElement.dataset.theme='dark'}</script>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('sptb_theme_v4')||'light'}catch(e){document.documentElement.dataset.theme='light'}</script>
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body data-page="signin">
@@ -28,7 +28,7 @@
           <div class="field"><label for="auth-pass">Password</label><input id="auth-pass" type="password" autocomplete="current-password" minlength="6" required></div>
           <button class="btn btn-full" id="auth-submit" type="submit">Sign in</button>
         </form>
-        <div style="text-align:center;margin-top:14px"><button id="forgot" type="button" style="background:none;border:0;color:var(--blue);font-size:14px;cursor:pointer">Forgot password?</button></div>
+        <div style="text-align:center;margin-top:14px"><button id="forgot" type="button" style="background:none;border:0;color:var(--accent);font-size:14px;cursor:pointer">Forgot password?</button></div>
         <div class="divider">or</div>
         <button class="btn btn-ghost btn-full" id="google-btn" type="button">
           <svg width="18" height="18" viewBox="0 0 24 24" style="margin-right:10px"><path fill="#4285F4" d="M23.5 12.3c0-.9-.1-1.5-.3-2.3H12v4.5h6.5c-.1 1.1-.8 2.7-2.4 3.8l-.1.1 3.5 2.7.2.1c2.2-2 3.8-5 3.8-8.9z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-2.9l-3.8-3c-1 .7-2.4 1.2-4.2 1.2-3.2 0-6-2.2-7-5.1l-.1.1-3.7 2.9v.1C3.3 21.3 7.3 24 12 24z"/><path fill="#FBBC05" d="M5 14.2c-.2-.7-.4-1.4-.4-2.2s.1-1.5.4-2.2l-.1-.1-3.6-2.8-.1.1C.4 8.5 0 10.2 0 12s.4 3.5 1.2 5l3.8-2.8z"/><path fill="#EA4335" d="M12 4.7c1.8 0 3 .8 3.7 1.4l3.3-3.2C17.9 1.1 15.2 0 12 0 7.3 0 3.3 2.7 1.2 6.9l3.8 3C6 7 8.8 4.7 12 4.7z"/></svg>
