@@ -3,39 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <title>Shop — SPTB.</title>
 <meta name="description" content="Shop all SPTB. essentials.">
-<script>try{document.documentElement.dataset.theme=localStorage.getItem('sptb_theme')||'dark'}catch(e){document.documentElement.dataset.theme='dark'}</script>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('sptb_theme_v4')||'light'}catch(e){document.documentElement.dataset.theme='light'}</script>
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body data-page="shop">
 <div class="frame">
 <header class="site-header" id="site-header"></header>
-<main class="wrap">
-  <section class="page-head">
+<main>
+  <div class="shop-head">
+    <span class="micro">Index</span>
     <h1>Shop all</h1>
     <p id="shop-count">Eight essentials. Nothing more, nothing less.</p>
-  </section>
-  <section class="section" style="padding-top:20px">
-    <div class="pill-row" style="margin-bottom:16px">
+    <div class="frow">
       <button class="pill active" data-filter="all">All</button>
       <button class="pill" data-filter="apparel">Apparel</button>
       <button class="pill" data-filter="essentials">Essentials</button>
+      <label class="search-inline">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="shop-q" placeholder="Search products…" autocomplete="off">
+      </label>
     </div>
-    <div class="search-pill" style="max-width:100%;margin-bottom:28px;box-shadow:var(--shadow);background:#fff">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      <input id="shop-q" placeholder="Search products…" autocomplete="off">
-    </div>
-    <div class="grid" id="shop-grid">
+  </div>
+  <div class="sec" style="padding-top:4px">
+    <div class="p-grid" id="shop-grid">
       <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
       <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
     </div>
-  </section>
+  </div>
+  <div style="height:60px"></div>
 </main>
 <footer class="site-footer" id="site-footer"></footer>
+<script src="/firebase-init.js" type="module"></script>
 <script src="/app.js" defer></script>
-<script type="module" src="/firebase-init.js"></script>
 </div>
 </body>
 </html>
