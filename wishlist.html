@@ -3,23 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <title>Wishlist — SPTB.</title>
-<script>try{document.documentElement.dataset.theme=localStorage.getItem('sptb_theme')||'dark'}catch(e){document.documentElement.dataset.theme='dark'}</script>
+<meta name="description" content="Your saved SPTB. products.">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('sptb_theme_v4')||'light'}catch(e){document.documentElement.dataset.theme='light'}</script>
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body data-page="wishlist">
 <div class="frame">
 <header class="site-header" id="site-header"></header>
-<main class="wrap">
-  <section class="page-head"><h1>Wishlist</h1><p>Everything you've saved for later.</p></section>
-  <section class="section" style="padding-top:20px">
-    <div class="grid" id="wish-grid"></div>
-  </section>
+<main>
+  <div class="shop-head">
+    <span class="micro">Saved</span>
+    <h1>Wishlist</h1>
+    <p>Everything you've saved for later.</p>
+  </div>
+  <div class="sec" style="padding-top:4px">
+    <div class="p-grid" id="wish-grid"></div>
+  </div>
+  <div style="height:60px"></div>
 </main>
 <footer class="site-footer" id="site-footer"></footer>
+<script src="/firebase-init.js" type="module"></script>
 <script src="/app.js" defer></script>
-<script type="module" src="/firebase-init.js"></script>
 </div>
 </body>
 </html>
