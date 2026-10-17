@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <title>Account — SPTB.</title>
-<script>try{document.documentElement.dataset.theme=localStorage.getItem('sptb_theme')||'dark'}catch(e){document.documentElement.dataset.theme='dark'}</script>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('sptb_theme_v4')||'light'}catch(e){document.documentElement.dataset.theme='light'}</script>
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body data-page="account">
@@ -18,11 +18,11 @@
   <section class="section" style="padding-top:28px">
     <div class="wrap" style="max-width:760px">
       <div id="acct-wall" style="display:none">
-        <div class="demo-note" style="font-size:15px">You're signed out. <a href="/signin?next=/account" style="color:var(--blue);font-weight:600">Sign in</a> to see your orders.</div>
+        <div class="demo-note" style="font-size:15px">You're signed out. <a href="/signin?next=/account" style="color:var(--accent);font-weight:600">Sign in</a> to see your orders.</div>
       </div>
       <div id="acct-body" style="display:none">
         <div class="sum-row" style="margin-bottom:24px"><span id="acct-email" style="color:var(--ink);font-weight:600"></span><button id="signout" class="btn btn-ghost btn-sm" type="button">Sign out</button></div>
-        <h2 class="sec-title" style="font-size:20px;margin-bottom:18px">Orders</h2>
+        <h2 style="font-size:20px;margin-bottom:18px;font-weight:700;letter-spacing:-.02em">Orders</h2>
         <div id="orders-list"><p style="color:var(--muted)">Loading…</p></div>
       </div>
     </div>
